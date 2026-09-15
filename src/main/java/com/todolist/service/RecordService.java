@@ -2,6 +2,7 @@ package com.todolist.service;
 
 import com.todolist.dao.RecordDao;
 import com.todolist.entity.Record;
+import com.todolist.entity.RecordStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,9 @@ public class RecordService {
 
     public List<Record> findAllRecords(){
         return recordDao.findALlRecords();
+    }
+
+    public void saveRecord(String title){
+        recordDao.saveRecord(new Record(title));
     }
 }

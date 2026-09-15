@@ -13,11 +13,15 @@ public class RecordDao {
     private final List<Record> records = new ArrayList<>(
             Arrays.asList(
                     new Record("Take a shower", RecordStatus.ACTIVE),
-                    new Record("Buy flowers", RecordStatus.ACTIVE),
+                    new Record("Buy flowers", RecordStatus.DONE),
                     new Record("Go to the gym", RecordStatus.ACTIVE)
             ));
 
     public List<Record> findALlRecords(){
         return new ArrayList<>(records);
+    }
+
+    public void saveRecord(Record record){
+        records.add(record);
     }
 }

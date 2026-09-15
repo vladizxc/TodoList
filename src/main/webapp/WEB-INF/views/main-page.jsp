@@ -36,22 +36,25 @@
         <div class="records-container">
         <c:forEach items="${records}" var="record">
             <div class="record">
-                            <div class="record__title"><span>${record.title}</span></div>
+                            <div class="record__title"><span class="${record.status == 'DONE' ? 'record__title_strikethrough' : ''}">${record.title}</span></div>
                             <div class="record__controls">
-                                <form class="record__controls-form">
-                                    <button type="submit" class="button_type_approve">
-                                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g clip-path="url(#clip0_258_5036)">
-                                                <path d="M8.5 0C3.808 0 0 3.808 0 8.5C0 13.192 3.808 17 8.5 17C13.192 17 17 13.192 17 8.5C17 3.808 13.192 0 8.5 0ZM7.65 12.257L3.4 8.007L4.5985 6.8085L7.65 9.8515L12.4015 5.1L13.6 6.307L7.65 12.257Z" fill="#fff"></path>
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_258_5036">
-                                                    <rect width="17" height="17" fill="white"></rect>
-                                                </clipPath>
-                                            </defs>
-                                        </svg>
-                                    </button>
-                                </form>
+                                <c:if test="${record.status == 'ACTIVE'}">
+                                    <form class="record__controls-form">
+                                                                        <button type="submit" class="button_type_approve">
+                                                                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <g clip-path="url(#clip0_258_5036)">
+                                                                                    <path d="M8.5 0C3.808 0 0 3.808 0 8.5C0 13.192 3.808 17 8.5 17C13.192 17 17 13.192 17 8.5C17 3.808 13.192 0 8.5 0ZM7.65 12.257L3.4 8.007L4.5985 6.8085L7.65 9.8515L12.4015 5.1L13.6 6.307L7.65 12.257Z" fill="#fff"></path>
+                                                                                </g>
+                                                                                <defs>
+                                                                                    <clipPath id="clip0_258_5036">
+                                                                                        <rect width="17" height="17" fill="white"></rect>
+                                                                                    </clipPath>
+                                                                                </defs>
+                                                                            </svg>
+                                                                        </button>
+                                    </form>
+                                </c:if>
+
                                 <form class="record__controls-form">
                                     <button type="submit" class="button_type_close">
                                         <svg width="24" height="24" viewBox="0 0 24 24">
@@ -63,7 +66,7 @@
                         </div>
         </c:forEach>
         <div class="management-container">
-            <form class="management-form">
+            <form action="/add-record" method="post" class="management-form">
                 <input type="text" name="title" placeholder="What needs to be done..." class="management-form__input">
                 <button type="submit" class="management-form__button">Add Record</button>
             </form>

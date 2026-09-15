@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,6 +22,11 @@ public class CommonController {
         this.recordService = recordService;
     }
 
+    @RequestMapping("/")
+    public String redirectToHomePage(){
+        return "redirect:/home";
+    }
+
     @RequestMapping("/home")
     public String getMainPage(Model model){
         List<Record> records = recordService.findAllRecords();
@@ -29,5 +36,11 @@ public class CommonController {
         model.addAttribute("numberOfActiveRecords", numberOfActiveRecords);
         model.addAttribute("records", records);
         return "main-page";
+    }
+
+    @RequestMapping(value = "/add-record", method = RequestMethod.POST)
+    public String addRecord(@RequestParam(name="title") String title){
+        recordService.saveRecord(title);
+        return "redirect:/home";
     }
 }
