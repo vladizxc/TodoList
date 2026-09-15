@@ -26,4 +26,12 @@ public class RecordService {
             recordDao.saveRecord(new Record(title));
         }
     }
+
+    public void setRecordStatus(String title, RecordStatus newStatus){
+        recordDao.updateRecordStatus(title, newStatus);
+    }
+
+    public void deleteRecord(String title){
+        recordDao.deleteRecord(title);
+    }
 }

@@ -43,4 +43,16 @@ public class CommonController {
         recordService.saveRecord(title);
         return "redirect:/home";
     }
+
+    @RequestMapping(value = "/make-record-done", method = RequestMethod.POST)
+    public String makeRecordDone(@RequestParam String title){
+        recordService.setRecordStatus(title, RecordStatus.DONE);
+        return "redirect:/home";
+    }
+
+    @RequestMapping(value = "/delete-record", method = RequestMethod.POST)
+    public String deleteRecord(@RequestParam String title){
+        recordService.deleteRecord(title);
+        return "redirect:/home";
+    }
 }

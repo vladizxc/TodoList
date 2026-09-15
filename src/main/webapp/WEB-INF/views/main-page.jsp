@@ -39,7 +39,8 @@
                             <div class="record__title"><span class="${record.status == 'DONE' ? 'record__title_strikethrough' : ''}">${record.title}</span></div>
                             <div class="record__controls">
                                 <c:if test="${record.status == 'ACTIVE'}">
-                                    <form class="record__controls-form">
+                                    <form action="/make-record-done" method="post" class="record__controls-form">
+                                        <input type="hidden" name="title" value="${record.title}">
                                                                         <button type="submit" class="button_type_approve">
                                                                             <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                 <g clip-path="url(#clip0_258_5036)">
@@ -55,7 +56,8 @@
                                     </form>
                                 </c:if>
 
-                                <form class="record__controls-form">
+                                <form action="/delete-record" method="post" class="record__controls-form">
+                                    <input type="hidden" name="title" value="${record.title}">
                                     <button type="submit" class="button_type_close">
                                         <svg width="24" height="24" viewBox="0 0 24 24">
                                             <path d="M12.071 13.485l-2.828 2.829-1.415-1.415 2.829-2.828-2.829-2.828 1.415-1.415 2.828 2.829L14.9 7.828l.707.708.707.707-2.829 2.828 2.829 2.829-1.415 1.414-2.828-2.829z" fill="#000"></path>
