@@ -27,6 +27,7 @@ public class CommonController {
         int numberOfDoneRecords = (int) records.stream().filter(record -> record.getStatus() == RecordStatus.DONE).count();
         model.addAttribute("numberOfDoneRecords", numberOfDoneRecords);
         model.addAttribute("numberOfActiveRecords", numberOfActiveRecords);
+        model.addAttribute("records", records);
         return "main-page";
     }
 }
