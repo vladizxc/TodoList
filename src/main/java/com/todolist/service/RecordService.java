@@ -22,6 +22,8 @@ public class RecordService {
     }
 
     public void saveRecord(String title){
-        recordDao.saveRecord(new Record(title));
+        if(title != null && !title.isBlank()) {
+            recordDao.saveRecord(new Record(title));
+        }
     }
 }
