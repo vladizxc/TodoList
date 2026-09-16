@@ -28,8 +28,8 @@ public class CommonController {
     }
 
     @RequestMapping("/home")
-    public String getMainPage(Model model){
-        List<Record> records = recordService.findAllRecords();
+    public String getMainPage(Model model, @RequestParam(name="filter", required = false) String fiterMode){
+        List<Record> records = recordService.findAllRecords(fiterMode);
         int numberOfActiveRecords = (int) records.stream().filter(record -> record.getStatus() == RecordStatus.ACTIVE).count();
         int numberOfDoneRecords = (int) records.stream().filter(record -> record.getStatus() == RecordStatus.DONE).count();
         model.addAttribute("numberOfDoneRecords", numberOfDoneRecords);
