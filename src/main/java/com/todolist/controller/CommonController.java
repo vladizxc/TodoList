@@ -46,16 +46,14 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/make-record-done", method = RequestMethod.POST)
-    public String makeRecordDone(@RequestParam int id,
-                                 @RequestParam(name="filter", required = false) String filterMode){
-        recordService.setRecordStatus(id, RecordStatus.DONE);
-        return "redirect:/home" + (!filterMode.isBlank() && filterMode != null ? "?filter=" + filterMode : "");
+    public String makeRecordDone(QueryParameters parameters){
+        recordService.setRecordStatus(parameters.getId(), RecordStatus.DONE);
+        return "redirect:/home" + (!parameters.getFilter().isBlank() && parameters.getFilter() != null ? "?filter=" + parameters.getFilter() : "");
     }
 
     @RequestMapping(value = "/delete-record", method = RequestMethod.POST)
-    public String deleteRecord(@RequestParam int id,
-                               @RequestParam(name="filter", required = false) String filterMode ){
-        recordService.deleteRecord(id);
-        return "redirect:/home" + (!filterMode.isBlank() && filterMode != null ? "?filter=" + filterMode : "");
+    public String deleteRecord(QueryParameters parameters){
+        recordService.deleteRecord(parameters.getId());
+        return "redirect:/home" + (!parameters.getFilter().isBlank() && parameters.getFilter() != null ? "?filter=" + parameters.getFilter() : "");
     }
 }
