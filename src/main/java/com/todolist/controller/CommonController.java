@@ -39,20 +39,20 @@ public class CommonController {
     }
 
     @RequestMapping(value = "/add-record", method = RequestMethod.POST)
-    public String addRecord(@RequestParam(name="title") String title){
+    public String addRecord(@RequestParam String title){
         recordService.saveRecord(title);
         return "redirect:/home";
     }
 
     @RequestMapping(value = "/make-record-done", method = RequestMethod.POST)
-    public String makeRecordDone(@RequestParam String title){
-        recordService.setRecordStatus(title, RecordStatus.DONE);
+    public String makeRecordDone(@RequestParam int id){
+        recordService.setRecordStatus(id, RecordStatus.DONE);
         return "redirect:/home";
     }
 
     @RequestMapping(value = "/delete-record", method = RequestMethod.POST)
-    public String deleteRecord(@RequestParam String title){
-        recordService.deleteRecord(title);
+    public String deleteRecord(@RequestParam int id){
+        recordService.deleteRecord(id);
         return "redirect:/home";
     }
 }

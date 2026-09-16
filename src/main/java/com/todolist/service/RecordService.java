@@ -27,11 +27,11 @@ public class RecordService {
         }
     }
 
-    public void setRecordStatus(String title, RecordStatus newStatus){
-        recordDao.updateRecordStatus(title, newStatus);
+    public void setRecordStatus(int id, RecordStatus newStatus){
+        recordDao.updateRecordStatus(id, newStatus);
     }
 
-    public void deleteRecord(String title){
-        recordDao.deleteRecord(title);
+    public void deleteRecord(int id){
+        recordDao.deleteRecord(id);
     }
 }
