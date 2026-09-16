@@ -74,9 +74,23 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <div class="hint">
-                        <span>There are no tasks!</span>
-                    </div>
+                    <c:choose>
+                        <c:when test="${fn:toLowerCase(param.filter)=='active'}">
+                            <div class="hint">
+                                <span>There are no active tasks!</span>
+                            </div>
+                        </c:when>
+                        <c:when test="${fn:toLowerCase(param.filter)=='done'}">
+                            <div class="hint">
+                                <span>There are no done tasks!</span>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="hint">
+                                <span>There are no tasks at all, try to add new one!</span>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:otherwise>
             </c:choose>
         </div>
