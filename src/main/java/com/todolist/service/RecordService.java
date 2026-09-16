@@ -3,6 +3,7 @@ package com.todolist.service;
 import com.todolist.dao.RecordDao;
 import com.todolist.entity.Record;
 import com.todolist.entity.RecordStatus;
+import com.todolist.entity.dto.RecordsContainerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,13 @@ public class RecordService {
         this.recordDao = recordDao;
     }
 
-    public List<Record> findAllRecords(String filterMode){
+    public RecordsContainerDto findAllRecords(String filterMode){
         List<Record> records = recordDao.findALlRecords();
-        if (filterMode == null || filterMode.isBlank()) return records;
+        int numberOfActiveRecords = (int) records.stream().filter(record -> record.getStatus() == RecordStatus.ACTIVE).count();
+        int numberOfDoneRecords = (int) records.stream().filter(record -> record.getStatus() == RecordStatus.DONE).count();
+        if (filterMode == null || filterMode.isBlank()){
+            return new RecordsContainerDto(records, numberOfDoneRecords, numberOfActiveRecords);
+        };
 
         String filterModeInUpperCase = filterMode.toUpperCase();
 
@@ -30,10 +35,11 @@ public class RecordService {
                 .map(Enum::name)
                 .toList();
         if (allowedFilterModes.contains(filterModeInUpperCase)){
-            return records.stream().filter(record -> record.getStatus() == RecordStatus.valueOf(filterModeInUpperCase))
+            List<Record> filteredRecords = records.stream().filter(record -> record.getStatus() == RecordStatus.valueOf(filterModeInUpperCase))
                     .toList();
+            return new RecordsContainerDto(filteredRecords, numberOfDoneRecords, numberOfActiveRecords);
         } else {
-            return records;
+            return new RecordsContainerDto(records, numberOfDoneRecords, numberOfActiveRecords);
         }
     }
 
