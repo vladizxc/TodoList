@@ -4,6 +4,7 @@ import com.todolist.entity.Record;
 import com.todolist.entity.RecordStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,76 +21,30 @@ public class RecordDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-
+    @Transactional
     public List<Record> findALlRecords(){
-        try {
-            entityManager.getTransaction().begin();
-
-            Query query = entityManager.createQuery("SELECT r FROM Record r");
-            List<Record> records = query.getResultList();
-
-            entityManager.getTransaction().commit();
-            return records;
-        }catch (Exception exception){
-            exception.printStackTrace();
-            entityManager.getTransaction().rollback();
-            return Collections.emptyList();
-        }
+        Query query = entityManager.createQuery("SELECT r FROM Record r ORDER BY r.id ASC");
+        List<Record> records = query.getResultList();
+        return records;
     }
 
+    @Transactional
     public void saveRecord(Record record){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(record);
-            entityManager.getTransaction().commit();
-        }catch (Exception exception){
-            exception.printStackTrace();
-            entityManager.getTransaction().rollback();
-        }finally {
-            entityManager.close();
-        }
+        entityManager.persist(record);
     }
 
+    @Transactional
     public void updateRecordStatus(int id, RecordStatus status){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-
-//            Record record = entityManager.find(Record.class, id);
-//            record.setStatus(status);
-//            record = entityManager.merge(record);
-
-            Query query = entityManager.createQuery("UPDATE Record SET status = :status WHERE id = :id");
-            query.setParameter("status", status);
-            query.setParameter("id", id);
-            query.executeUpdate();
-
-            entityManager.getTransaction().commit();
-        }catch (Exception exception){
-            exception.printStackTrace();
-            entityManager.getTransaction().rollback();
-        }finally {
-            entityManager.close();
-        }
+        Query query = entityManager.createQuery("UPDATE Record SET status = :status WHERE id = :id");
+        query.setParameter("status", status);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
+    @Transactional
     public void deleteRecord(int id){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-
-            Query query = entityManager.createQuery("DELETE FROM Record WHERE id = :id");
-            query.setParameter("id", id);
-            query.executeUpdate();
-
-            entityManager.getTransaction().commit();
-        }catch (Exception exception){
-            exception.printStackTrace();
-            entityManager.getTransaction().rollback();
-        }finally {
-            entityManager.close();
-        }
+        Query query = entityManager.createQuery("DELETE FROM Record WHERE id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }
