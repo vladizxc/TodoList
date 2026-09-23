@@ -1,10 +1,10 @@
 package com.todolist.config;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -41,13 +41,30 @@ public class DatabaseConfig {
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2DdlAuto;
 
+    @Value("${db.connection-pool.initial-size}")
+    private int databaseConnectionInitialSize;
+
+    @Value("${db.connection-pool.min-idle}")
+    private int databaseConnectionMinIdleSize;
+
+    @Value("${db.connection-pool.max-idle}")
+    private int databaseConnectionMaxIdleSize;
+
+    @Value("${db.connection-pool.max-total}")
+    private int databaseConnectionMaxTotalSize;
+
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(databaseDriver);
         dataSource.setUrl(databaseUrl);
         dataSource.setUsername(databaseUsername);
         dataSource.setPassword(databasePassword);
+
+        dataSource.setInitialSize(databaseConnectionInitialSize);
+        dataSource.setMinIdle(databaseConnectionMinIdleSize);
+        dataSource.setMaxIdle(databaseConnectionMaxIdleSize);
+        dataSource.setMaxTotal(databaseConnectionMaxTotalSize);
         return dataSource;
     }
 
