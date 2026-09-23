@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,17 +17,11 @@ import java.util.List;
 @Repository
 public class RecordDao {
 
-    private final EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public RecordDao(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
     public List<Record> findALlRecords(){
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try {
             entityManager.getTransaction().begin();
 
@@ -39,10 +34,7 @@ public class RecordDao {
             exception.printStackTrace();
             entityManager.getTransaction().rollback();
             return Collections.emptyList();
-        }finally {
-            entityManager.close();
         }
-
     }
 
     public void saveRecord(Record record){
