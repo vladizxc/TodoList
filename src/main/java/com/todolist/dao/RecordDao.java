@@ -46,19 +46,58 @@ public class RecordDao {
     }
 
     public void saveRecord(Record record){
-        records.add(record);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(record);
+            entityManager.getTransaction().commit();
+        }catch (Exception exception){
+            exception.printStackTrace();
+            entityManager.getTransaction().rollback();
+        }finally {
+            entityManager.close();
+        }
     }
 
     public void updateRecordStatus(int id, RecordStatus status){
-        for (Record item : records){
-           if (item.getId() == id){
-               item.setStatus(status);
-               break;
-           }
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+//            Record record = entityManager.find(Record.class, id);
+//            record.setStatus(status);
+//            record = entityManager.merge(record);
+
+            Query query = entityManager.createQuery("UPDATE Record SET status = :status WHERE id = :id");
+            query.setParameter("status", status);
+            query.setParameter("id", id);
+            query.executeUpdate();
+
+            entityManager.getTransaction().commit();
+        }catch (Exception exception){
+            exception.printStackTrace();
+            entityManager.getTransaction().rollback();
+        }finally {
+            entityManager.close();
         }
     }
 
     public void deleteRecord(int id){
-        records.removeIf(item -> item.getId() == id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+            Query query = entityManager.createQuery("DELETE FROM Record WHERE id = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
+
+            entityManager.getTransaction().commit();
+        }catch (Exception exception){
+            exception.printStackTrace();
+            entityManager.getTransaction().rollback();
+        }finally {
+            entityManager.close();
+        }
     }
 }
